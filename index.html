@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diaz Perfumeria - Enlaces</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            background-color: #333333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .profile-logo {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 0%;
+        }
+
+        .profile-text {
+            font-size: 14px;
+            color: #ffffff;
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: #ffffff;
+            margin-bottom: 40px;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 24px;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .social-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+        }
+
+        .social-link:active {
+            transform: scale(0.95);
+        }
+
+        .social-icon {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+        /* Responsive design */
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .title {
+                font-size: 22px;
+            }
+            
+            .subtitle {
+                font-size: 15px;
+            }
+            
+            .social-links {
+                gap: 20px;
+            }
+            
+            .social-link {
+                width: 45px;
+                height: 45px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-image">
+            <!-- LOGO: Coloca la URL de la imagen del logo aquí -->
+            <img src="iconos\logoinsta.jpg" alt="Diaz Perfumeria Logo" class="profile-logo">
+            
+            <!-- Si no tienes logo, puedes usar texto en su lugar comentando la imagen y descomentando el texto -->
+            <!-- <div class="profile-text">Diaz<br>Perfumeria</div> -->
+        </div>
+        
+        <h1 class="title">Diaz Perfumeria</h1>
+        <p class="subtitle">✨ No solo vendemos perfumes, creamos sensaciones Conócenos ✨</p>
+        
+        <div class="social-links">
+            <!-- INSTAGRAM -->
+            <a href="https://www.instagram.com/diazperfumeria/?igsh=NjE3ODkxb3llYTdu#" class="social-link" title="Instagram">
+                <img src="iconos\instagran.png" alt="Instagram" class="social-icon">
+            </a>
+            
+            <!-- WHATSAPP -->
+            <a href="https://api.whatsapp.com/send?phone=573145016713&text=Quiero%20comprar%20este%20producto%20que%20vi%20en%20el%20sitio%20web%20%F0%9F%94%A5" class="social-link" title="WhatsApp">
+                <img src="iconos\whatsapp.png" alt="WhatsApp" class="social-icon">
+            </a>
+            
+            <!-- TIKTOK -->
+            <a href="https://www.tiktok.com/@diaz.perfumeria?_t=ZN-8xhmWee8y3i&_r=1" class="social-link" title="TikTok">
+                <img src="iconos\tiktok.png" alt="TikTok" class="social-icon">
+            </a>
+            
+            <!-- FACEBOOK -->
+            <a href="https://web.facebook.com/profile.php?id=61577779360080&locale=es_LA&_rdc=1&_rdr#" class="social-link" title="Facebook">
+                <img src="iconos\facebook.png" alt="Facebook" class="social-icon">
+            </a>
+            
+            <!-- SITIO WEB -->
+            <a href="diazperfumeria/pagina.html" class="social-link" title="Sitio Web">
+                <img src="iconos\wed.png" alt="Sitio Web" class="social-icon">
+            </a>
+        </div>
+    </div>
+</body>
+</html>

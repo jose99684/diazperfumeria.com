@@ -46,7 +46,7 @@ Shopify.theme.handle = "null";
 Shopify.theme.style = {"id":null,"handle":null};
 Shopify.cdnHost = "diazperfumeria.com/cdn";
 Shopify.routes = Shopify.routes || {};
-Shopify.routes.root = "../index.html";</script>
+Shopify.routes.root = "../pagina.html";</script>
 <script type="module">!function(o){(o.Shopify=o.Shopify||{}).modules=!0}(window);</script>
 <script>!function(o){function n(){var o=[];function n(){o.push(Array.prototype.slice.apply(arguments))}return n.q=o,n}var t=o.Shopify=o.Shopify||{};t.loadFeatures=n(),t.autoloadFeatures=n()}(window);</script>
 <script id="shop-js-analytics" type="application/json">{"pageType":"collection"}</script>
@@ -620,7 +620,7 @@ window.rfSettingCss=window.rfSettingCss||".reelfy-gallery, .pswp_rf, .rf-mext-ma
         this.money_with_currency_format = "${{amount_with_comma_separator}} COP",
         this.currencyCodeEnabled = true,
         
-        this.formatMoney=function(t,e){const r=this.currencyCodeEnabled?this.money_with_currency_format:this.money_format;function a(t,e){return void 0===t?e:t}function o(t,e,r,o){if(e=a(e,2),r=a(r,","),o=a(o,"."),isNaN(t)||null==t)return 0;var n=(t=(t/100).toFixed(e)).split(".");return n[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g,"$1"+r)+(n[1]?o+n[1]:"")}"string"==typeof t&&(t=t.replace(".",""));var n="",i=/\{\{\s*(\w+)\s*\}\}/,s=e||r;switch(s.match(i)[1]){case"amount":n=o(t,2);break;case"amount_no_decimals":n=o(t,0);break;case"amount_with_comma_separator":n=o(t,2,".",",");break;case"amount_with_space_separator":n=o(t,2," ",",");break;case"amount_with_period_and_space_separator":n=o(t,2," ",".");break;case"amount_no_decimals_with_comma_separator":n=o(t,0,".",",");break;case"amount_no_decimals_with_space_separator":n=o(t,0," ");break;case"amount_with_apostrophe_separator":n=o(t,2,"'",".")}return s.replace(i,n)},this.resizeImage=function(t,e){try{if(!e||"original"==e||"full"==e||"master"==e)return t;if(-1!==t.indexOf("cdn.shopify.com")||-1!==t.indexOf("../cdn/shop/index.html")){var r=t.match(/\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif|webp)((\#[0-9a-z\-]+)?(\?v=.*)?)?$/gim);if(null==r)return null;var a=t.split(r[0]),o=r[0];return a[0]+"_"+e+o}}catch(r){return t}return t},this.getProduct=function(t){if(!t)return!1;let e=("/"===this.routes.root_url?"":this.routes.root_url)+"/products/"+t+".js?shop="+Shopify.shop;return window.ECOM_LIVE&&(e="/shop/builder/ajax/ecom-proxy/products/"+t+"?shop="+Shopify.shop),window.fetch(e,{headers:{"Content-Type":"application/json"}}).then(t=>t.ok?t.json():false)};
+        this.formatMoney=function(t,e){const r=this.currencyCodeEnabled?this.money_with_currency_format:this.money_format;function a(t,e){return void 0===t?e:t}function o(t,e,r,o){if(e=a(e,2),r=a(r,","),o=a(o,"."),isNaN(t)||null==t)return 0;var n=(t=(t/100).toFixed(e)).split(".");return n[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g,"$1"+r)+(n[1]?o+n[1]:"")}"string"==typeof t&&(t=t.replace(".",""));var n="",i=/\{\{\s*(\w+)\s*\}\}/,s=e||r;switch(s.match(i)[1]){case"amount":n=o(t,2);break;case"amount_no_decimals":n=o(t,0);break;case"amount_with_comma_separator":n=o(t,2,".",",");break;case"amount_with_space_separator":n=o(t,2," ",",");break;case"amount_with_period_and_space_separator":n=o(t,2," ",".");break;case"amount_no_decimals_with_comma_separator":n=o(t,0,".",",");break;case"amount_no_decimals_with_space_separator":n=o(t,0," ");break;case"amount_with_apostrophe_separator":n=o(t,2,"'",".")}return s.replace(i,n)},this.resizeImage=function(t,e){try{if(!e||"original"==e||"full"==e||"master"==e)return t;if(-1!==t.indexOf("cdn.shopify.com")||-1!==t.indexOf("../cdn/shop/pagina.html")){var r=t.match(/\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif|webp)((\#[0-9a-z\-]+)?(\?v=.*)?)?$/gim);if(null==r)return null;var a=t.split(r[0]),o=r[0];return a[0]+"_"+e+o}}catch(r){return t}return t},this.getProduct=function(t){if(!t)return!1;let e=("/"===this.routes.root_url?"":this.routes.root_url)+"/products/"+t+".js?shop="+Shopify.shop;return window.ECOM_LIVE&&(e="/shop/builder/ajax/ecom-proxy/products/"+t+"?shop="+Shopify.shop),window.fetch(e,{headers:{"Content-Type":"application/json"}}).then(t=>t.ok?t.json():false)};
 
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('ecom-redirect')) {
@@ -1017,7 +1017,7 @@ window.rfSettingCss=window.rfSettingCss||".reelfy-gallery, .pswp_rf, .rf-mext-ma
   </details>
 </header-drawer>
 
-<h1 class="header__heading"><a href="\diazperfumeria\index.html" class="header__heading-link link link--text focus-inset"><div class="header__heading-logo-wrapper">
+<h1 class="header__heading"><a href="\diazperfumeria\pagina.html" class="header__heading-link link link--text focus-inset"><div class="header__heading-logo-wrapper">
             
   <img src="/imagenes_diaz_perfumeria/LOGO_DIAZ.png" alt="Diaz perfumeria" srcset=""
   /imagenes_diaz_perfumeria/LOGO_DIAZ.png 120w,
@@ -2154,7 +2154,7 @@ function closeImageZoomModal() {
     <!-- Product Detail -->
     <div id="productDetail" class="product-detail-container" style="display: none;">
         <div class="breadcrumb">
-            <a href="../index.html" onclick="showProductList()">Inicio</a> / <a href="hombres2.html" onclick="showProductList()">Fragancias para Hombre</a> / <span id="breadcrumbName"></span>
+            <a href="../pagina.html" onclick="showProductList()">Inicio</a> / <a href="hombres2.html" onclick="showProductList()">Fragancias para Hombre</a> / <span id="breadcrumbName"></span>
         </div>
         <div class="product-detail">
             <div class="product-image-container">
@@ -3012,7 +3012,7 @@ function closeImageZoomModal() {
  window.EComposer.TEMPLATE_ID="6841af044d2323c13805f6c2";
  window.EComposer.FOOTER = {"template_id":"6841af044d2323c13805f6c2","title":"Footer 2","type":"footer","slug":"ecom-footer-2","plan_id":1};
  </script>
- <div class="ecom-builder" id="ecom-footer-2"><div class="ecom-sections" data-section-id="sections--15672240242760__ecom-footer-2-footer"><section class="ecom-row ecom-core ecom-section ecom-kl1js9d7p1" data-id="ecom-kl1js9d7p1" style="z-index: inherit;"><div data-deep="1" class="core__row--columns core__row--full"><div class="ecom-column ecom-core ecom-v8mjyf8uksl"><div class="core__column--wrapper"><div class="ecom-column__overlay"><div class="ecom-overlay"></div></div><div class="core__blocks" index="0"><div class="core__blocks--body"><div class="ecom-block ecom-core core__block elmspace ecom-thy89akyi0o" data-core-is="row"><div class="ecom-row ecom-core core__block ecom-8s9mvy60r1t" data-id="ecom-8s9mvy60r1t" style="z-index: inherit;"><div data-deep="2" class="core__row--columns"><div class="ecom-column ecom-core ecom-5mua66mw6zh"><div class="core__column--wrapper"><div class="ecom-column__overlay"><div class="ecom-overlay"></div></div><div class="core__blocks" index="0"><div class="core__blocks--body"><div class="ecom-block ecom-core core__block elmspace ecom-8bk40exf9f" data-core-is="block"><div class="ecom-element ecom-base-image" deep="2"><figure><div class="ecom-container-image ecom-image-align" data-stopdrag=""><div data-stopdrag="" class="ecom-image-content-position ecom-image-default ecom-base-image-container-overlay" ><a href="index.html" class="ecom-image-picture-link ecom-image-picture ecom-base-image-container-overlay ecom-flex"><picture><img loading="lazy" fetchpriority="low" src="/imagenes_diaz_perfumeria/LOGO2_PIEL.png"   style="width: 110px; height: auto; margin-bottom: 20px;" alt="Logo_opt_Dorado">
+ <div class="ecom-builder" id="ecom-footer-2"><div class="ecom-sections" data-section-id="sections--15672240242760__ecom-footer-2-footer"><section class="ecom-row ecom-core ecom-section ecom-kl1js9d7p1" data-id="ecom-kl1js9d7p1" style="z-index: inherit;"><div data-deep="1" class="core__row--columns core__row--full"><div class="ecom-column ecom-core ecom-v8mjyf8uksl"><div class="core__column--wrapper"><div class="ecom-column__overlay"><div class="ecom-overlay"></div></div><div class="core__blocks" index="0"><div class="core__blocks--body"><div class="ecom-block ecom-core core__block elmspace ecom-thy89akyi0o" data-core-is="row"><div class="ecom-row ecom-core core__block ecom-8s9mvy60r1t" data-id="ecom-8s9mvy60r1t" style="z-index: inherit;"><div data-deep="2" class="core__row--columns"><div class="ecom-column ecom-core ecom-5mua66mw6zh"><div class="core__column--wrapper"><div class="ecom-column__overlay"><div class="ecom-overlay"></div></div><div class="core__blocks" index="0"><div class="core__blocks--body"><div class="ecom-block ecom-core core__block elmspace ecom-8bk40exf9f" data-core-is="block"><div class="ecom-element ecom-base-image" deep="2"><figure><div class="ecom-container-image ecom-image-align" data-stopdrag=""><div data-stopdrag="" class="ecom-image-content-position ecom-image-default ecom-base-image-container-overlay" ><a href="pagina.html" class="ecom-image-picture-link ecom-image-picture ecom-base-image-container-overlay ecom-flex"><picture><img loading="lazy" fetchpriority="low" src="/imagenes_diaz_perfumeria/LOGO2_PIEL.png"   style="width: 110px; height: auto; margin-bottom: 20px;" alt="Logo_opt_Dorado">
  </picture></a></div></div>
  </figure></div></div>
  <div class="ecom-block ecom-core core__block elmspace ecom-x8nxyjk4vas" data-core-is="block">
@@ -3030,7 +3030,7 @@ function closeImageZoomModal() {
     </ul>
 
     <script>
-      window.shopUrl = '../index.html';
+      window.shopUrl = '../pagina.html';
       window.routes = {
         cart_add_url: '/cart/add',
         cart_change_url: '/cart/change',
