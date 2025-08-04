@@ -1610,124 +1610,180 @@ window.rfSettingCss=window.rfSettingCss||".reelfy-gallery, .pswp_rf, .rf-mext-ma
           <br>
           <br>
 
-              <title>Experiencias Memorables</title>
-              <style>
-       
+          <title>Experiencias Memorables</title>
+          <style>
+              .carousel {
+                  position: relative;
+                  width: 90%; /* Más estrecho en móviles */
+                  margin: 0 auto;
+                  overflow-x: auto; /* Habilita desplazamiento horizontal */
+                  scroll-snap-type: x mandatory; /* Desplazamiento con snap para centrar videos */
+                  white-space: nowrap;
+                  box-sizing: border-box;
+                  -webkit-overflow-scrolling: touch; /* Desplazamiento suave en iOS */
+                  scrollbar-width: none; /* Oculta barra de desplazamiento en Firefox */
+              }
+              .carousel::-webkit-scrollbar {
+                  display: none; /* Oculta barra de desplazamiento en Chrome/Safari */
+              }
+              .carousel video {
+                  width: 80vw; /* Ajusta el ancho según el viewport */
+                  max-width: 300px; /* Límite máximo para pantallas grandes */
+                  height: auto; /* Mantiene proporción */
+                  margin: 0 5px;
+                  vertical-align: top;
+                  display: inline-block;
+                  cursor: pointer;
+                  scroll-snap-align: center; /* Centra el video al desplazar */
+              }
+              .carousel .controls {
+                  position: absolute;
+                  top: 50%;
+                  width: 100%;
+                  display: flex;
+                  justify-content: space-between;
+                  transform: translateY(-50%);
+                  padding: 0 5px;
+                  box-sizing: border-box;
+              }
+              .carousel .controls button {
+                  background: rgba(0, 0, 0, 0.5);
+                  border: none;
+                  color: white;
+                  padding: 8px;
+                  cursor: pointer;
+                  font-size: 16px;
+                  border-radius: 50%;
+                  width: 40px;
+                  height: 40px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+              }
+              .carousel .controls button:hover {
+                  background: rgba(0, 0, 0, 0.8);
+              }
+              .modal {
+                  display: none;
+                  position: fixed;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  background-color: rgba(0, 0, 0, 0.9);
+                  justify-content: center;
+                  align-items: center;
+                  z-index: 1000;
+              }
+              .modal-content {
+                  position: relative;
+                  width: 90vw; /* Ajusta al ancho del viewport */
+                  max-width: 800px; /* Límite máximo para pantallas grandes */
+                  max-height: 90vh; /* Limita la altura */
+                  overflow: auto;
+              }
+              .modal video {
+                  width: 100%; /* Ocupa todo el contenedor modal */
+                  height: auto; /* Mantiene proporción */
+              }
+              .close {
+                  position: absolute;
+                  top: 10px;
+                  right: 15px;
+                  color: white;
+                  font-size: 28px;
+                  cursor: pointer;
+                  z-index: 1001;
+              }
+      
+              /* Media Queries para dispositivos móviles */
+              @media (max-width: 767px) {
                   .carousel {
-                      position: relative;
-                      width: 80%;
-                      overflow: hidden;
-                      white-space: nowrap;
+                      width: 100%; /* Usa todo el ancho en móviles */
                   }
                   .carousel video {
-                      width: 300px;
-                      height: 500px;
-                      object-fit: cover;
-                      margin: 0 10px;
-                      vertical-align: top;
-                      display: inline-block;
-                      cursor: pointer;
-                  }
-                  .carousel .controls {
-                      position: absolute;
-                      top: 50%;
-                      width: 100%;
-                      display: flex;
-                      justify-content: space-between;
-                      transform: translateY(-50%);
+                      width: 70vw; /* Videos más pequeños en móviles */
+                      max-width: 250px;
+                      margin: 0 3px;
                   }
                   .carousel .controls button {
-                      background: rgba(0, 0, 0, 0.5);
-                      border: none;
-                      color: white;
-                      padding: 10px;
-                      cursor: pointer;
-                      font-size: 18px;
-                  }
-                  .carousel .controls button:hover {
-                      background: rgba(0, 0, 0, 0.8);
-                  }
-                  .modal {
-                      display: none;
-                      position: fixed;
-                      top: 0;
-                      left: 0;
-                      width: 100%;
-                      height: 100%;
-                      background-color: rgba(0, 0, 0, 0.9);
-                      justify-content: center;
-                      align-items: center;
-                      z-index: 1000;
+                      padding: 6px;
+                      font-size: 14px;
+                      width: 32px;
+                      height: 32px;
                   }
                   .modal-content {
-                      position: relative;
-                      max-width: 80%; /* Ajusta el ancho máximo del modal */
-                      max-height: 100vh; /* Ajusta la altura máxima del modal */
-                  }
-                  .modal video {
-                      width: 60%; /* El video ocupará el 100% del contenedor modal-content */
-                      height: auto; /* Mantiene la proporción del video */
+                      width: 95vw; /* Más ancho en móviles */
+                      max-height: 80vh; /* Menos altura para dejar espacio */
                   }
                   .close {
-                      position: absolute;
-                      top: 10px;
-                      right: 20px;
-                      color: white;
-                      font-size: 30px;
-                      cursor: pointer;
+                      font-size: 24px;
+                      right: 10px;
                   }
-              </style>
-          </head>
-          <body>
-              <div class="carousel">
-                  <div class="controls">
-                      <button onclick="scrollLeft()">&lt;</button>
-                      <button onclick="scrollRight()">&gt;</button>
-                  </div>
-              
-                  <video onclick="openModal(this)">
-                      <source src="../VIDEOS\experiencias_memorables\descarga.mp4" type="video/mp4">
-                      Your browser does not support the video tag.
-                  </video>
-                  <video onclick="openModal(this)">
-                      <source src="../VIDEOS\experiencias_memorables\experiencias_1.mp4" type="video/mp4">
-                      Your browser does not support the video tag.
-                  </video>
-                  <video onclick="openModal(this)">
-                      <source src="../VIDEOS\experiencias_memorables\IMG_0258.MP4" type="video/mp4">
-                      Your browser does not support the video tag.
-                  </video>
+              }
+      
+              @media (max-width: 480px) {
+                  .carousel video {
+                      width: 85vw; /* Videos ocupan más espacio en pantallas muy pequeñas */
+                      max-width: 200px;
+                  }
+                  .carousel .controls button {
+                      padding: 5px;
+                      font-size: 12px;
+                      width: 28px;
+                      height: 28px;
+                  }
+              }
+          </style>
+      </head>
+      <body>
+          <div class="carousel">
+              <div class="controls">
+                  <button onclick="scrollLeft()">&lt;</button>
+                  <button onclick="scrollRight()">&gt;</button>
               </div>
-          
-              <div id="modal" class="modal">
-                  <span class="close" onclick="closeModal()">&times;</span>
-                  <div class="modal-content">
-                      <video id="modalVideo" controls autoplay></video>
-                  </div>
+              <video onclick="openModal(this)">
+                  <source src="../VIDEOS/experiencias_memorables/descarga.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <video onclick="openModal(this)">
+                  <source src="../VIDEOS/experiencias_memorables/experiencias_1.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <video onclick="openModal(this)">
+                  <source src="../VIDEOS/experiencias_memorables/IMG_0258.MP4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+          </div>
+          <div id="modal" class="modal">
+              <span class="close" onclick="closeModal()">&times;</span>
+              <div class="modal-content">
+                  <video id="modalVideo" controls autoplay></video>
               </div>
-          
-              <script>
-                  function scrollLeft() {
-                      const carousel = document.querySelector('.carousel');
-                      carousel.scrollLeft -= 320;
-                  }
-                  function scrollRight() {
-                      const carousel = document.querySelector('.carousel');
-                      carousel.scrollLeft += 320;
-                  }
-                  function openModal(video) {
-                      const modal = document.getElementById('modal');
-                      const modalVideo = document.getElementById('modalVideo');
-                      modalVideo.src = video.querySelector('source').src;
-                      modal.style.display = 'flex';
-                  }
-                  function closeModal() {
-                      const modal = document.getElementById('modal');
-                      const modalVideo = document.getElementById('modalVideo');
-                      modalVideo.src = '';
-                      modal.style.display = 'none';
-                  }
-              </script>
+          </div>
+      
+          <script>
+              function scrollLeft() {
+                  const carousel = document.querySelector('.carousel');
+                  carousel.scrollLeft -= 320;
+              }
+              function scrollRight() {
+                  const carousel = document.querySelector('.carousel');
+                  carousel.scrollLeft += 320;
+              }
+              function openModal(video) {
+                  const modal = document.getElementById('modal');
+                  const modalVideo = document.getElementById('modalVideo');
+                  modalVideo.src = video.querySelector('source').src;
+                  modal.style.display = 'flex';
+              }
+              function closeModal() {
+                  const modal = document.getElementById('modal');
+                  const modalVideo = document.getElementById('modalVideo');
+                  modalVideo.src = '';
+                  modal.style.display = 'none';
+              }
+          </script>
    
     
 
