@@ -2728,26 +2728,20 @@ setTimeout(() => {
                 font-size: 20px;
             }
         }
-        @media (max-width: 480px) {
-            .video-card {
-                width: 220px;
-                height: 391px;
-            }
-            .play-button {
-                width: 50px;
-                height: 50px;
-            }
-            .play-button::after {
-                border-left: 15px solid #000;
-                border-top: 9px solid transparent;
-                border-bottom: 9px solid transparent;
-            }
-            .carousel-arrow {
-                width: 35px;
-                height: 35px;
-                font-size: 18px;
-            }
-        }
+     @media (max-width: 480px) {
+    .video-card {
+        width: 85vw; /* Ocupará el 85% del ancho de la pantalla */
+        max-width: 300px; /* Para que no sea gigante */
+        height: auto; 
+        aspect-ratio: 9/16; /* Mantiene la proporción de video vertical */
+    }
+    
+    /* Centrar el carrusel para que el video activo quede en medio */
+    .carousel-track {
+        padding-left: 7.5vw; /* Mitad del espacio restante (100 - 85 = 15 / 2 = 7.5) */
+    }
+}
+
     </style>
 </head>
 <body>
@@ -2904,22 +2898,23 @@ setTimeout(() => {
             updateArrowState();
         }
 
-        function scrollToIndex(index) {
-            const cardWidth = 320;
-            const track = document.getElementById('carouselTrack');
-            currentIndex = index;
+function scrollToIndex(index) {
+    // Busca la primera tarjeta para saber cuánto mide realmente
+    const card = document.querySelector('.video-card'); 
+    const gap = 15; // El espacio entre videos definido en tu CSS
+    
+    // Si existe la tarjeta, usa su ancho real, si no, usa 320 por defecto
+    const cardWidth = card ? card.offsetWidth + gap : 320; 
 
-            // Update carousel position
-            track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
-            track.style.animation = 'none';
+    const track = document.getElementById('carouselTrack');
+    currentIndex = index;
+    
+    // Mueve el carrusel la distancia correcta
+    track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+    
+    // ... resto de tu código para los puntos (dots) ...
+}
 
-            // Update active dot
-            const dots = document.querySelectorAll('.dot');
-            dots.forEach(d => d.classList.remove('active'));
-            dots[currentIndex].classList.add('active');
-
-            updateArrowState();
-        }
 
         function updateArrowState() {
             const leftArrow = document.querySelector('.carousel-arrow.left');
