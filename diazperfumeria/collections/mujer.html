@@ -2173,6 +2173,10 @@ function closeImageZoomModal() {
                         <img id="productBottle50ml" class="product-bottle-image" src="" alt="Envase 50ml">
                         <i class="fas fa-search-plus magnify-icon" onclick="openImageZoomModal('50ml')"></i>
                     </div>
+                     <div class="product-image-container">
+                        <img id="productBottle100ml" class="product-bottle-image" src="" alt="Envase 100ml">
+                        <i class="fas fa-search-plus magnify-icon" onclick="openImageZoomModal('100ml')"></i>
+                    </div>
                 </div>
             </div>
             <div class="product-details">
@@ -2189,6 +2193,7 @@ function closeImageZoomModal() {
                     <div class="size-options">
                         <div class="size-option active" data-size="30" data-price="0">30ml</div>
                         <div class="size-option" data-size="50" data-price="0">50ml</div>
+                        <div class="size-option" data-size="100" data-price="0">100ml</div>
                     </div>
                 </div>
                 
@@ -2485,6 +2490,7 @@ function closeImageZoomModal() {
         const productMainImage = document.getElementById('productMainImage');
         const productBottle30ml = document.getElementById('productBottle30ml');
         const productBottle50ml = document.getElementById('productBottle50ml');
+        const productBottle100ml = document.getElementById('productBottle100ml');
         const productDetailName = document.getElementById('productDetailName');
         const productDetailCurrentPrice = document.getElementById('productDetailCurrentPrice');
         const productDetailOriginalPrice = document.getElementById('productDetailOriginalPrice');
@@ -2517,15 +2523,19 @@ function closeImageZoomModal() {
     function updateProductBottleImages() {
         const productBottle30ml = document.getElementById('productBottle30ml');
         const productBottle50ml = document.getElementById('productBottle50ml');
+        const productBottle100ml = document.getElementById('productBottle100ml');
         const productBottleImages = document.getElementById('productBottleImages');
 
         productBottle30ml.src = getLocalImage(currentProduct.Nombre, '30');
         productBottle50ml.src = getLocalImage(currentProduct.Nombre, '50');
+        productBottle100ml.src = getLocalImage(currentProduct.Nombre, '100');
         productBottle30ml.alt = 'Envase 30ml';
         productBottle50ml.alt = 'Envase 50ml';
+        productBottle100ml.alt = 'Envase 100ml';
 
         productBottle30ml.onerror = () => handleImageError(productBottle30ml, productBottle30ml.src);
         productBottle50ml.onerror = () => handleImageError(productBottle50ml, productBottle50ml.src);
+        productBottle100ml.onerror = () => handleImageError(productBottle100ml, productBottle100ml.src);
 
         productBottleImages.querySelectorAll('.product-bottle-image').forEach(img => {
             img.classList.remove('active');
@@ -2544,7 +2554,7 @@ function closeImageZoomModal() {
         const basePrecio = extractPrice(currentProduct.Precio || '0');
         const basePrecioOriginal = extractPrice(currentProduct.Original || currentProduct['Precio Original'] || '0');
         
-        const multipliers = { '30': 0.64866, '50': 1.0 };
+        const multipliers = { '30': 0.64866, '50': 1.0, '100':1.86486 };
         const multiplier = multipliers[currentSize] || 1.0;
         const currentPrice = Math.round(basePrecio * multiplier);
         const originalPrice = Math.round(basePrecioOriginal * multiplier);
@@ -2669,7 +2679,7 @@ function closeImageZoomModal() {
         let imageSrc;
         if (type === 'main') {
             imageSrc = processUniversalImage(currentProduct.Imagen);
-        } else if (type === '30ml' || type === '50ml') {
+        } else if (type === '30ml' || type === '50ml'|| type === '100ml') {
             imageSrc = getLocalImage(currentProduct.Nombre, type.replace('ml', ''));
         }
         
@@ -2701,7 +2711,11 @@ function closeImageZoomModal() {
         if (!currentProduct) return;
         
         const basePrecio = extractPrice(currentProduct.Precio || '0');
-        const multipliers = { '30': 0.7, '50': 1.0 };
+        const multipliers = {
+            30: 0.64866,
+            50: 1.0,
+            100: 1.86486
+          };
         const multiplier = multipliers[currentSize] || 1.0;
         const currentPrice = Math.round(basePrecio * multiplier);
         
