@@ -2510,17 +2510,25 @@ setTimeout(() => {
             transform: translateY(-10px) scale(1.02);
             box-shadow: 0 12px 32px rgba(0,0,0,0.25);
         }
-      .video-card iframe {
-      position: absolute;        /* ← CAMBIA A absolute */
-      top: 50%;                  /* ← AÑADE */
-      left: 50%;                 /* ← AÑADE */
-      width: 100%;
-      height: 100%;
-      border: none;
-      pointer-events: none;
-      transform: translate(-50%, -50%) scale(1.2); /* ← AÑADE: Hace zoom para eliminar barras negras */
-      transform-origin: center;  /* ← AÑADE */
-  }
+        .video-card iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border: none;
+            pointer-events: none;
+            transform: translate(-50%, -50%) scale(1.6); /* 👈 CAMBIÉ DE 1.15 A 1.6 */
+            transform-origin: center;
+        }
+
+        /* Para móviles */
+        @media (max-width: 480px) {
+            .video-card iframe {
+                transform: translate(-50%, -50%) scale(1.8); /* 👈 AÚN MÁS ZOOM EN MÓVIL */
+            }
+        }
+
 
         .video-overlay {
             position: absolute;
