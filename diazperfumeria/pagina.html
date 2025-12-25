@@ -2881,7 +2881,7 @@ setTimeout(() => {
         function createVideoCard(video) {
             return `
                 <div class="video-card" onclick="openModal('${video.id}')">
-                    <iframe src="https://drive.google.com/file/d/${video.id}/preview" allow="autoplay"></iframe>
+                    <iframe src="https://drive.google.com/file/d/${video.id}/preview?rm=minimal&amp;controls=0" allowautoplay></iframe>
                     <div class="play-button"></div>
                     <div class="video-duration">${video.duration}</div>
                     <div class="video-overlay">
