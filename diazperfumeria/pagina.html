@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Díaz Perfumería · Tu aroma soñado</title>
+  <meta name="description" content="Díaz Perfumería: extractos de alta concentración, perfumes para hombre, mujer, unisex, árabes, nicho y body splash.">
+  <link rel="stylesheet" href="assets/diaz-modern.css">
+  <script>
+    /* CONFIGURACIÓN GENERAL:
+       - DIAZ_ROOT indica desde dónde buscar imágenes del catálogo.
+       - DIAZ_FEATURED_NAMES controla los productos destacados de la página principal. */
+    window.DIAZ_ROOT = "../";
+    window.DIAZ_FEATURED_NAMES = ["Amor Amor", "Bombshell", "Intense Cafe", "CR7 Origins", "Sauvage", "Good Girl", "Baccarat Rouge 540", "Yara", "King"];
+
+    /* =========================================================
+       PORTADA DINÁMICA / PROMOCIONES DESDE GOOGLE SHEETS
+       ---------------------------------------------------------
+       Esta configuración conecta la portada con la hoja que enviaste.
+       Para cambiar la fuente de imágenes:
+       1) Cambia SHEET_ID por el ID de tu Google Sheet.
+       2) Cambia API_KEY por tu clave de Google Sheets API.
+       3) Cambia SHEET_NAME si tu pestaña deja de llamarse PROMOCIONES.
+       4) En la hoja usa una columna llamada Imagen, Foto, URL o Link.
+       5) Las imágenes pueden venir como enlace de Drive, enlace directo o ID de Drive.
+       ========================================================= */
+    window.DIAZ_PROMO_CONFIG = {
+      SHEET_ID: '1Z5ydY_7nIGvKhxWhmgBMlQK5ozuQewb5LloPtGiJK_w',
+      API_KEY: 'AIzaSyDZB-Qp4gJJ-fhDT9IlFiSnCCgfai2e2hA',
+      SHEET_NAME: 'PROMOCIONES',
+      WHATSAPP_NUMBER: '573145016713',
+      AUTO_SLIDE_MS: 5000,
+      FALLBACK_IMAGES: [
+        'cdn.shopify.com/s/files/1/0575/1622/8680/files/banner_gratis_decants_v2_1920X600-1003c02.jpg',
+        'envases_imagenes/envases_2.png',
+        'diazperfumeria/assets/experiencias/logo-dorado-diaz.png'
+      ]
+    };
+  </script>
+  <script src="assets/diaz-data.js"></script>
+  <script defer src="assets/diaz-modern.js"></script>
+</head>
+<body>
+
+<!-- =========================================================
+     FRANJA SUPERIOR / ANUNCIO
+     Cambia aquí los textos cortos que se mueven en la parte superior.
+     ========================================================= -->
+<div class="announcement" aria-label="Mensaje de bienvenida">
+  <div class="announcement-track">
+    <span><strong>Tu aroma soñado</strong> · Bienvenidos a Díaz Perfumería · Extractos de alta concentración · </span>
+    <span><strong>Tu aroma soñado</strong> · Bienvenidos a Díaz Perfumería · Extractos de alta concentración · </span>
+  </div>
+</div>
+
+<!-- =========================================================
+     HEADER / MENÚ PRINCIPAL
+     Para cambiar el logo reemplaza el archivo LOGO_DIAZ_NEGRO_TRANSPARENTE.png.
+     ========================================================= -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-left">
+      <button class="icon-button" type="button" data-menu-open aria-label="Abrir menú">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+    <a class="header-logo" href="pagina.html" aria-label="Díaz Perfumería">
+      <img src="../imagenes_diaz_perfumeria/LOGO_DIAZ_NEGRO_TRANSPARENTE.png" alt="Díaz Perfumería">
+    </a>
+    <div class="header-icons">
+      <button class="icon-button" type="button" data-search-open aria-label="Buscar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
+      </button>
+      <a class="icon-anchor user-icon" href="https://wa.me/573145016713?text=Hola%2C%20quiero%20iniciar%20una%20compra%20en%20D%C3%ADaz%20Perfumer%C3%ADa" target="_blank" rel="noopener" aria-label="Atención por WhatsApp">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+      </a>
+      <a class="icon-anchor" href="cart.html" aria-label="Carrito">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h15l-2 9H8L6 3H3"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- MENÚ LATERAL: modifica o agrega categorías dentro de estos enlaces. -->
+<div class="menu-backdrop" data-menu-close></div>
+<aside class="side-menu" aria-label="Menú lateral">
+  <div class="side-head">
+    <h2>Menú</h2>
+    <button class="side-close" type="button" data-menu-close aria-label="Cerrar menú">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
+    </button>
+  </div>
+  <nav class="side-nav">
+    <a href="collections/hombres2.html">HOMBRE</a>
+    <a href="collections/mujer.html">MUJER</a>
+    <a href="collections/unisex.html">UNISEX</a>
+    <a href="collections/arabe.html">ÁRABE</a>
+    <a href="collections/nicho.html">NICHO</a>
+    <a class="small-case" href="collections/body-splash.html">Body Splash</a>
+  </nav>
+  <a class="login-row" href="https://wa.me/573145016713?text=Hola%2C%20quiero%20asesor%C3%ADa%20en%20D%C3%ADaz%20Perfumer%C3%ADa" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+    <span>Atención por WhatsApp</span>
+  </a>
+  <div class="side-social">
+    <a href="https://www.instagram.com/diazperfumeria?igsh=NjE3ODkxb3llYTdu" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.tiktok.com/@diaz.perfumeria?_t=ZN-8xhmWee8y3i&_r=1" target="_blank" rel="noopener">TikTok</a>
+    <a href="https://www.facebook.com/profile.php?id=61577779360080&locale=es_LA" target="_blank" rel="noopener">Facebook</a>
+  </div>
+</aside>
+
+<!-- BUSCADOR: los resultados salen desde diaz-data.js. -->
+<div class="search-drawer" data-search-close>
+  <div class="search-panel" onclick="event.stopPropagation()">
+    <div class="search-panel-head">
+      <input data-site-search type="search" placeholder="Buscar perfume, marca o categoría">
+      <button class="icon-button" type="button" data-search-close aria-label="Cerrar búsqueda">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
+      </button>
+    </div>
+    <div class="search-results" data-search-results></div>
+  </div>
+</div>
+
+<main>
+  <!-- =========================================================
+       PORTADA / PROMOCIONES DINÁMICAS DESDE GOOGLE SHEETS + DRIVE
+       ---------------------------------------------------------
+       Esta portada queda con la misma estructura del código que enviaste:
+       promo-section > slider-container > slider-wrapper > slides-container.
+
+       La conexión se toma de window.DIAZ_PROMO_CONFIG en el <head>.
+       Para cambiar imágenes, edita la hoja PROMOCIONES y agrega enlaces en
+       una columna llamada Imagen, Foto, URL o Link.
+       Se aceptan enlaces de Google Drive, enlaces directos https o IDs de Drive.
+       ========================================================= -->
+  <section class="promo-section promo-hero" id="inicio" data-promo-hero aria-label="Promociones Díaz Perfumería">
+    <div class="promo-loading" data-promo-loading>
+      <span class="eyebrow">Díaz Perfumería</span>
+      <strong>Cargando promociones...</strong>
+    </div>
+
+    <div class="slider-container" aria-live="polite">
+      <div class="slider-wrapper">
+        <div class="slides-container" id="slides-container" data-promo-slides>
+          <!-- Las slides se cargan dinámicamente desde Google Sheets / Drive -->
+        </div>
+      </div>
+
+      <!-- Flechas del slider. Cambia colores/tamaño en diaz-modern.css: .nav-arrow -->
+      <button class="nav-arrow prev" id="prevBtn" type="button" data-promo-prev aria-label="Promoción anterior">❮</button>
+      <button class="nav-arrow next" id="nextBtn" type="button" data-promo-next aria-label="Promoción siguiente">❯</button>
+
+      <!-- Indicadores del slider. Cambia colores/tamaño en diaz-modern.css: .dots-container y .dot -->
+      <div class="dots-container" id="dots-container" data-promo-dots aria-label="Indicadores de promociones">
+        <!-- Los dots se cargan dinámicamente aquí -->
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       LOS MÁS VENDIDOS
+       Las tarjetas se generan automáticamente desde diaz-data.js y DIAZ_FEATURED_NAMES.
+       ========================================================= -->
+  <section class="section section-dark" id="mas-vendidos">
+    <div class="section-heading center">
+      <span class="eyebrow">Selección Díaz</span>
+      <h2>Los Más Vendidos</h2>
+    </div>
+    <div class="product-carousel">
+      <div class="carousel-window"><div class="product-track" data-featured-products></div></div>
+      <div class="carousel-controls">
+        <button type="button" data-carousel-prev aria-label="Producto anterior">‹</button>
+        <span data-carousel-status>1/3</span>
+        <button type="button" data-carousel-next aria-label="Producto siguiente">›</button>
+      </div>
+      <div class="view-all-row"><a class="btn btn-white" href="collections/hombres2.html">Ver todo</a></div>
+    </div>
+  </section>
+
+  <!-- VIDEO PRINCIPAL DESTACADO: reemplaza el archivo mp4 si quieres otro video de fondo. -->
+  <section class="statement">
+    <div class="statement-bg">
+      <video autoplay muted loop playsinline>
+        <source src="../VIDEOS/Sea%20la%20opci%23U00f3n%20que%20escojas%2C%20el%20destacar%20siempre%20va%20a%20estar%20presente%20y%20eso%20solo%20lo%20obtienes%20en%20DIA.mp4" type="video/mp4">
+      </video>
+    </div>
+    <h2>Perfumes con extractos de alta concentración que duran +8 horas</h2>
+  </section>
+
+  <!-- TEST / LLAMADO A LA ACCIÓN: cambia la imagen en --test-img y el texto del botón. -->
+  <section class="test-banner" style="--test-img:url('../imagenes_diaz_perfumeria/banner-test-diaz.png')">
+    <div class="test-content">
+      <p>Realiza el test de personalidad para encontrar tu perfume perfecto</p>
+      <a class="btn btn-white" href="https://wa.me/573145016713?text=Hola%2C%20quiero%20realizar%20el%20test%20para%20encontrar%20mi%20perfume%20perfecto%20en%20D%C3%ADaz%20Perfumer%C3%ADa" target="_blank" rel="noopener">Realizar Test</a>
+    </div>
+  </section>
+
+  <!-- CATEGORÍAS: agrega o elimina tarjetas duplicando un <a class="category-card">. -->
+  <section class="section" id="categorias">
+    <div class="section-heading center">
+      <span class="eyebrow">Catálogo organizado</span>
+      <h2>Descubre más categorías</h2>
+    </div>
+    <div class="category-grid category-grid-featured">
+      <a class="category-card" href="collections/body-splash.html">
+        <img src="assets/categorias/categoria-splash.png" alt="Body Splash Díaz Perfumería">
+        <div><strong>BODY SPLASH →</strong><span>Dulces, limpios y ligeros.</span></div>
+      </a>
+      <a class="category-card" href="collections/unisex.html">
+        <img src="assets/categorias/categoria-unisex.png" alt="Unisex Díaz Perfumería">
+        <div><strong>UNISEX →</strong><span>Un aroma para todos.</span></div>
+      </a>
+      <a class="category-card" href="collections/nicho.html">
+        <img src="assets/categorias/categoria-nicho.png" alt="Nicho Díaz Perfumería">
+        <div><strong>NICHO →</strong><span>Perfil exclusivo y alta presencia.</span></div>
+      </a>
+      <a class="category-card" href="collections/hombres2.html">
+        <img src="../hombre_imagenes/98.Sauvage%20-%20Dior.png" alt="Hombres">
+        <div><strong>HOMBRES →</strong><span>Frescos, intensos y elegantes.</span></div>
+      </a>
+      <a class="category-card" href="collections/mujer.html">
+        <img src="../mujer_imagenes/35.Good%20Girl%20-%20Carolina%20Herrera.png" alt="Mujeres">
+        <div><strong>MUJERES →</strong><span>Florales, dulces y memorables.</span></div>
+      </a>
+      <a class="category-card" href="collections/arabe.html">
+        <img src="assets/categorias/categoria-arabe.png" alt="Árabes Díaz Perfumería">
+        <div><strong>ÁRABES →</strong><span>Oud, especias y profundidad.</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       VIDEOS DE EXPERIENCIAS
+       Mantengo tus videos locales. Para agregar uno nuevo:
+       copia un <article class="video-card">, cambia el src del <source> y edita el título.
+       ========================================================= -->
+  <section class="section experiences" id="experiencias">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">Experiencias Díaz</span>
+        <h2>Videos de experiencias</h2>
+      </div>
+      <p>Recorre los videos de la tienda y las experiencias cargadas en tus recursos. Desliza, usa las flechas o mueve el mouse sobre el carrusel para ver más contenido.</p>
+    </div>
+    <div class="experience-layout">
+      <article class="experience-intro">
+        <img src="assets/experiencias/experiencia-diaz-hombre.png" alt="Asesoría Díaz Perfumería">
+        <div class="experience-intro-copy">
+          <span class="eyebrow">Asesoría personalizada</span>
+          <h3>Encuentra el aroma que habla por ti.</h3>
+          <p>Experiencias reales, atención directa y extractos de alta concentración para hombre, mujer, unisex, árabe, nicho y body splash.</p>
+        </div>
+      </article>
+      <div class="experience-slider" data-video-slider>
+        <div class="video-slider-window">
+          <div class="video-slider-track" data-video-track>
+            <article class="video-card">
+              <div class="video-frame"><video controls playsinline preload="metadata" data-video-fallback><source src="../VIDEOS/experiencias_memorables/experiencias_1.mp4" type="video/mp4"></video></div>
+              <div><strong>Experiencia 01</strong><p>Contenido de marca publicado en tus recursos.</p></div>
+            </article>
+            <article class="video-card">
+              <div class="video-frame"><video controls playsinline preload="metadata" data-video-fallback><source src="../VIDEOS/experiencias_memorables/experiencias_2.mp4" type="video/mp4"></video></div>
+              <div><strong>Experiencia 02</strong><p>Momentos y sensaciones Díaz Perfumería.</p></div>
+            </article>
+            <article class="video-card">
+              <div class="video-frame"><video controls playsinline preload="metadata" data-video-fallback><source src="../VIDEOS/experiencias_memorables/IMG_0258.MP4" type="video/mp4"></video></div>
+              <div><strong>Experiencia 03</strong><p>Videos verticales ubicados como contenido social.</p></div>
+            </article>
+            <article class="video-card">
+              <div class="video-frame"><video controls playsinline preload="metadata" data-video-fallback><source src="../VIDEOS/experiencias_memorables/descarga.mp4" type="video/mp4"></video></div>
+              <div><strong>Experiencia 04</strong><p>Más material local de Díaz Perfumería.</p></div>
+            </article>
+            <article class="video-card">
+              <div class="video-frame wide"><iframe src="https://drive.google.com/file/d/1cp4xhU6yKqICmzv_shJrVTGltnrhAIFy/preview" allow="autoplay" title="Experiencia destacada Díaz Perfumería"></iframe></div>
+              <div><strong>Experiencia destacada</strong><p>Video integrado desde Drive sin mostrar la URL cruda.</p></div>
+            </article>
+            <article class="video-card image-note">
+              <div class="video-frame"><img src="assets/experiencias/logo-negro-diaz.png" alt="Díaz Perfumería"></div>
+              <div><strong>Díaz Perfumería</strong><p>Marca, envases y asesoría organizados en una experiencia visual más limpia.</p></div>
+            </article>
+          </div>
+        </div>
+        <div class="video-slider-actions">
+          <button type="button" data-video-prev aria-label="Video anterior">‹</button>
+          <button type="button" data-video-next aria-label="Video siguiente">›</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFICIOS: sección agregada para parecerse más a la página principal del video. -->
+  <section class="section benefits-section">
+    <div class="benefits-layout">
+      <div class="benefits-photo">
+        <img src="../cdn.shopify.com/s/files/1/0575/1622/8680/files/POST177d0.JPG" alt="Productos Díaz Perfumería">
+      </div>
+      <div class="benefits-copy">
+        <span class="eyebrow">Beneficios Díaz</span>
+        <h2>Extractos premium sin pagar de más</h2>
+        <div class="benefit-list benefit-list-large">
+          <div class="benefit-item">
+            <div class="benefit-icon">01</div>
+            <div><h3>Alta concentración y máxima duración</h3><p>Cada extracto está formulado con una concentración pensada para una proyección potente y una duración prolongada.</p></div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">02</div>
+            <div><h3>Envíos rápidos y compra segura</h3><p>Tu pedido llega directo a tu puerta con respaldo, pago seguro y atención personalizada.</p></div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">03</div>
+            <div><h3>Garantía de satisfacción</h3><p>Te acompañamos antes y después de la compra para que elijas una fragancia que realmente va contigo.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARATIVA: puedes cambiar textos, checks o beneficios según tu propuesta comercial. -->
+  <section class="section compact">
+    <div class="difference-wrap">
+      <div class="difference-text">
+        <span class="eyebrow">Diferencial Díaz</span>
+        <h2>¿Qué hace diferente a Díaz Perfumería?</h2>
+        <p>Elegir Díaz Perfumería no es sólo ahorrar. Es llevarte un perfume que habla por ti, con presentación propia y atención directa.</p>
+      </div>
+      <div class="comparison">
+        <div class="comparison-row"><div>Beneficio</div><div>Díaz</div><div>Otras tiendas</div></div>
+        <div class="comparison-row"><div>Duración real</div><div class="check">✓</div><div class="cross">×</div></div>
+        <div class="comparison-row"><div>Inspiración auténtica</div><div class="check">✓</div><div class="cross">×</div></div>
+        <div class="comparison-row"><div>Atención personalizada</div><div class="check">✓</div><div class="cross">×</div></div>
+        <div class="comparison-row"><div>Identidad propia</div><div class="check">✓</div><div class="cross">×</div></div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- SCROLL DE BENEFICIOS: inspirado en la sección dinámica de perfumes. -->
+  <section class="section perfume-motion-section" aria-label="Beneficios de los perfumes Díaz">
+    <div class="perfume-motion-wrap">
+      <div class="perfume-motion-list" aria-hidden="true">
+        <div class="perfume-motion-track">
+          <span>ALTA PERFUMERÍA</span>
+          <span>EXTRACTOS DE ALTA CONCENTRACIÓN</span>
+          <span>FRAGANCIAS ICÓNICAS</span>
+          <span>DURACIÓN PROLONGADA</span>
+          <span>AROMAS QUE DEJAN HUELLA</span>
+          <span>ENVÍOS RÁPIDOS EN COLOMBIA</span>
+          <span>ASESORÍA PERSONALIZADA</span>
+          <span>ALTA PERFUMERÍA</span>
+          <span>EXTRACTOS DE ALTA CONCENTRACIÓN</span>
+          <span>FRAGANCIAS ICÓNICAS</span>
+          <span>DURACIÓN PROLONGADA</span>
+          <span>AROMAS QUE DEJAN HUELLA</span>
+          <span>ENVÍOS RÁPIDOS EN COLOMBIA</span>
+          <span>ASESORÍA PERSONALIZADA</span>
+        </div>
+      </div>
+      <div class="perfume-motion-copy">
+        <span class="eyebrow">Beneficios Díaz</span>
+        <h2>Beneficios de los perfumes Díaz</h2>
+        <p>Nuestros extractos están pensados para acompañarte durante horas, con aromas intensos, elegantes y memorables que se adaptan a tu estilo y dejan una huella especial en cada ocasión.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO: el comentario se envía por WhatsApp. Cambia el número dentro del enlace si es necesario. -->
+  <section class="section compact" id="contacto">
+    <div class="contact-band">
+      <div>
+        <span class="eyebrow">Contacto</span>
+        <h2>Cuéntanos a qué huele tu vida.</h2>
+        <p>Envía un comentario o abre WhatsApp para recibir recomendación según ocasión, personalidad y familia olfativa.</p>
+      </div>
+      <form class="mini-form" onsubmit="event.preventDefault(); window.open('https://wa.me/573145016713?text='+encodeURIComponent('Hola, quiero asesoría. Comentario: '+this.comentario.value),'_blank')">
+        <textarea name="comentario" placeholder="Comentario"></textarea>
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER: cambia redes, textos legales o enlaces finales aquí. -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <img class="footer-logo" src="../imagenes_diaz_perfumeria/LOGO_DIAZ_DORADO_TRANSPARENTE.png" alt="Díaz Perfumería">
+      <p>Una fragancia bien elegida no solo se usa: se recuerda, acompaña y deja huella en cada momento.</p>
+    </div>
+    <div><strong>Catálogo</strong><a href="collections/hombres2.html">Hombre</a><a href="collections/mujer.html">Mujer</a><a href="collections/unisex.html">Unisex</a><a href="collections/arabe.html">Árabe</a></div>
+    <div><strong>Más secciones</strong><a href="collections/nicho.html">Nicho</a><a href="collections/body-splash.html">Body Splash</a><a href="pagina.html#experiencias">Videos de experiencias</a><a href="pagina.html#contacto">Contacto</a></div>
+    <div><strong>Redes</strong><a href="https://www.instagram.com/diazperfumeria?igsh=NjE3ODkxb3llYTdu" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@diaz.perfumeria?_t=ZN-8xhmWee8y3i&_r=1" target="_blank" rel="noopener">TikTok</a><a href="https://www.facebook.com/profile.php?id=61577779360080&locale=es_LA" target="_blank" rel="noopener">Facebook</a><a href="https://wa.me/573145016713?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20D%C3%ADaz%20Perfumer%C3%ADa" target="_blank" rel="noopener">WhatsApp</a></div>
+  </div>
+  <div class="footer-bottom">© 2026 Díaz Perfumería. No vendemos perfumes, creamos sensaciones.</div>
+</footer>
+
+
+<!-- =========================================================
+     MODAL DE PROMOCIONES DINÁMICAS
+     ---------------------------------------------------------
+     Este modal usa la misma estructura del código que compartiste.
+     Se abre al hacer clic sobre una promoción de la portada.
+     ========================================================= -->
+<div id="imageModal" class="image-modal" aria-hidden="true">
+  <span class="modal-close" id="modalCloseBtn" role="button" tabindex="0" aria-label="Cerrar promoción">&times;</span>
+  <div class="modal-content1" role="dialog" aria-modal="true" aria-label="Vista ampliada de promoción">
+    <img id="modalImage" class="modal-image" src="" alt="Promoción">
+  </div>
+
+  <!-- Controles de zoom -->
+  <div class="zoom-controls" id="zoomControls" aria-label="Controles de zoom">
+    <button class="zoom-btn" id="zoomOutBtn" type="button" aria-label="Disminuir zoom">−</button>
+    <button class="zoom-btn" id="resetZoomBtn" type="button" aria-label="Restablecer zoom">⟲</button>
+    <button class="zoom-btn" id="zoomInBtn" type="button" aria-label="Aumentar zoom">+</button>
+  </div>
+</div>
+
+<!-- Botón flotante de WhatsApp para el modal -->
+<a href="#" class="whatsapp-modal" id="whatsapp-modal" target="_blank" rel="noopener" data-icon-only="true" aria-label="Consultar promoción por WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.149-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+  </svg>
+</a>
+
+<div class="modal" id="productModal" aria-hidden="true"><div class="modal-backdrop"></div><div class="modal-panel" role="dialog" aria-modal="true"><button class="modal-close" type="button" data-modal-close aria-label="Cerrar">×</button><div data-modal-content></div></div></div>
+<a class="whatsapp-float" href="https://wa.me/573145016713?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20D%C3%ADaz%20Perfumer%C3%ADa" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.7 13.6L3 21l4.5-1.2A9 9 0 1 0 12 3Z"/><path d="M8.8 8.5c.3-.7.7-.7 1-.4l.7 1.6c.1.3 0 .5-.2.8l-.4.5c.7 1.3 1.7 2.3 3.1 3l.6-.4c.3-.2.5-.3.8-.2l1.5.7c.4.2.4.6.2 1-.4.8-1.1 1.2-1.9 1.2-2.8-.1-6.6-3.4-6.8-6.4 0-.7.5-1.3 1.4-1.4Z"/></svg></a>
+</body>
+</html>
