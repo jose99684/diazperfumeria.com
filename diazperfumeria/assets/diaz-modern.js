@@ -2,7 +2,16 @@
 // Ruta base para imágenes y videos. Se respeta incluso cuando DIAZ_ROOT es cadena vacía en index.html.
 const ROOT = (typeof window.DIAZ_ROOT === 'string') ? window.DIAZ_ROOT : '../';
 const WA_PHONE = '573145016713';
+
+// ==========================================================
+// PROMOCIÓN DEL CARRITO - INTERRUPTOR GENERAL
+// true  = activa el descuento del 15% en tarjetas, carrito y WhatsApp.
+// false = desactiva por completo el descuento y oculta todos sus avisos.
+// PARA ACTIVAR O DESACTIVAR, SOLO CAMBIA ESTA LÍNEA:
+const ACTIVAR_DESCUENTO_15 = true;
+// ==========================================================
 const CART_DISCOUNT_RATE = 0.15;
+const CART_DISCOUNT_PERCENT = Math.round(CART_DISCOUNT_RATE * 100);
 const SIZE_PRICES = Object.freeze({30:24000, 50:37000, 100:69000});
 const q=(s,c=document)=>c.querySelector(s), qa=(s,c=document)=>Array.from(c.querySelectorAll(s));
 const money=n=>Number(n||0) ? '$ '+Number(n||0).toLocaleString('es-CO') : 'Consultar precio';
@@ -326,7 +335,7 @@ function variantsFor(p){
 }
 function minVariantPrice(p){const prices=variantsFor(p).map(v=>v.price).filter(Boolean); return prices.length?Math.min(...prices):(p?.price||60000);}
 // TARJETA DE PRODUCTO: cambia aquí el texto del botón, badge o estructura de cada perfume.
-function cardHTML(p,idx){const price=minVariantPrice(p); return `<article class="product-card" data-product-index="${idx}" tabindex="0"><div class="product-media"><span class="product-badge">15% DTO. EN CARRITO</span><img src="${safe(asset(p.image))}" alt="${safe(p.name)}" loading="lazy" onerror="this.onerror=null;this.src='${safe(asset('envases_imagenes/envases_1.png'))}'"></div><div class="product-info"><h3 class="product-title">${safe(p.name)}</h3><div class="product-brand">${safe(p.brand||p.category||'Díaz Perfumería')}</div><div class="product-price">A partir de ${money(price)}</div><button class="select-button" type="button">Seleccionar opciones</button></div></article>`;}
+function cardHTML(p,idx){const price=minVariantPrice(p); const discountBadge=ACTIVAR_DESCUENTO_15?`<span class="product-badge">${CART_DISCOUNT_PERCENT}% DTO. EN CARRITO</span>`:''; return `<article class="product-card" data-product-index="${idx}" tabindex="0"><div class="product-media">${discountBadge}<img src="${safe(asset(p.image))}" alt="${safe(p.name)}" loading="lazy" onerror="this.onerror=null;this.src='${safe(asset('envases_imagenes/envases_1.png'))}'"></div><div class="product-info"><h3 class="product-title">${safe(p.name)}</h3><div class="product-brand">${safe(p.brand||p.category||'Díaz Perfumería')}</div><div class="product-price">A partir de ${money(price)}</div><button class="select-button" type="button">Seleccionar opciones</button></div></article>`;}
 function bindProductCards(products, scope=document){qa('[data-product-index]',scope).forEach(card=>{const open=()=>openProductModal(products[Number(card.dataset.productIndex)],true); card.addEventListener('click',open); card.addEventListener('keydown',e=>{if(e.key==='Enter') open();});});}
 // LOS MÁS VENDIDOS: genera las tarjetas usando DIAZ_FEATURED_NAMES y los datos de diaz-data.js.
 function initHomeProducts(){const track=q('[data-featured-products]'); if(!track) return; const products=homeProducts(); let page=0; const per=3; const pages=Math.max(1,Math.ceil(products.length/per)); track.innerHTML=products.map(cardHTML).join(''); bindProductCards(products,track); const status=q('[data-carousel-status]'); function update(){track.style.transform=`translateX(${-page*100}%)`; if(status) status.textContent=(page+1)+'/'+pages;} qa('[data-carousel-prev]').forEach(b=>b.addEventListener('click',()=>{page=(page-1+pages)%pages; update();})); qa('[data-carousel-next]').forEach(b=>b.addEventListener('click',()=>{page=(page+1)%pages; update();})); update();}
@@ -377,10 +386,21 @@ function updateCartBadge(){const count=readCart().reduce((s,i)=>s+Number(i.qty||
 function showToast(text){let t=q('.diaz-toast'); if(!t){t=document.createElement('div'); t.className='diaz-toast'; document.body.appendChild(t);} t.textContent=text; t.classList.add('show'); clearTimeout(t._timer); t._timer=setTimeout(()=>t.classList.remove('show'),2400);}
 function cartTotals(cart=readCart()){
  const subtotal=cart.reduce((sum,i)=>sum+(Number(i.price||0)*Number(i.qty||1)),0);
- const discount=Math.round(subtotal*CART_DISCOUNT_RATE);
+ const discount=ACTIVAR_DESCUENTO_15 ? Math.round(subtotal*CART_DISCOUNT_RATE) : 0;
  return {subtotal,discount,total:Math.max(0,subtotal-discount)};
 }
-function cartWhatsAppUrl(){const cart=readCart(); let msg='Hola, quiero finalizar la compra de estos productos:\n\n'; cart.forEach(i=>{const lineTotal=Number(i.price||0)*Number(i.qty||1); msg+=`• ${i.name} (${i.size}) x${i.qty||1}: ${money(lineTotal)}\n`;}); const totals=cartTotals(cart); msg+=`\nSubtotal: ${money(totals.subtotal)}\nDescuento 15%: -${money(totals.discount)}\nTotal con descuento: ${money(totals.total)}\n\n¿Me confirmas disponibilidad y envío?`; return `https://wa.me/${WA_PHONE}?text=${encodeURIComponent(msg)}`;}
+function cartWhatsAppUrl(){
+ const cart=readCart();
+ let msg='Hola, quiero finalizar la compra de estos productos:\n\n';
+ cart.forEach(i=>{const lineTotal=Number(i.price||0)*Number(i.qty||1); msg+=`• ${i.name} (${i.size}) x${i.qty||1}: ${money(lineTotal)}\n`;});
+ const totals=cartTotals(cart);
+ if(ACTIVAR_DESCUENTO_15){
+  msg+=`\nSubtotal: ${money(totals.subtotal)}\nDescuento ${CART_DISCOUNT_PERCENT}%: -${money(totals.discount)}\nTotal con descuento: ${money(totals.total)}\n\n¿Me confirmas disponibilidad y envío?`;
+ }else{
+  msg+=`\nTotal: ${money(totals.total)}\n\n¿Me confirmas disponibilidad y envío?`;
+ }
+ return `https://wa.me/${WA_PHONE}?text=${encodeURIComponent(msg)}`;
+}
 
 function ensureCartDrawer(){
  if(!q('[data-cart-drawer-open]')){
@@ -405,7 +425,8 @@ function renderCartDrawer(){
  if(!cart.length){body.innerHTML='<div class="cart-drawer-empty"><div><h3>Tu carrito está vacío</h3><p>Selecciona un perfume, elige el envase y agrégalo al carrito.</p></div></div>'; foot.innerHTML='<a class="btn btn-white" href="'+shopCollectionHref()+'">Ver perfumes</a>'; return;}
  body.innerHTML='<div class="cart-drawer-list">'+cart.map((i,idx)=>{const line=Number(i.price||0)*Number(i.qty||1); return `<article class="cart-drawer-row"><img src="${safe(asset(i.image))}" alt="${safe(i.name)}"><div><h3>${safe(i.name)}</h3><p>${safe(i.brand||'Díaz Perfumería')} · ${safe(i.size)}</p><strong>${money(line)}</strong><div class="cart-drawer-row-actions"><button type="button" data-drawer-minus="${idx}">−</button><span>${i.qty||1}</span><button type="button" data-drawer-plus="${idx}">+</button><button type="button" class="drawer-remove" data-drawer-remove="${idx}">Eliminar</button></div></div></article>`}).join('')+'</div>';
  const totals=cartTotals(cart);
- foot.innerHTML='<div class="cart-drawer-totals"><div class="cart-drawer-line"><span>Subtotal</span><strong>'+money(totals.subtotal)+'</strong></div><div class="cart-drawer-line discount"><span>Descuento 15%</span><strong>− '+money(totals.discount)+'</strong></div><div class="cart-drawer-total"><span>Total</span><strong>'+money(totals.total)+'</strong></div></div><a class="btn btn-white" target="_blank" rel="noopener" href="'+cartWhatsAppUrl()+'">Finalizar compra por WhatsApp</a><button class="btn btn-outline" type="button" data-drawer-clear>Vaciar carrito</button>';
+ const discountRow=ACTIVAR_DESCUENTO_15?`<div class="cart-drawer-line discount"><span>Descuento ${CART_DISCOUNT_PERCENT}%</span><strong>− ${money(totals.discount)}</strong></div>`:'';
+ foot.innerHTML=`<div class="cart-drawer-totals"><div class="cart-drawer-line"><span>Subtotal</span><strong>${money(totals.subtotal)}</strong></div>${discountRow}<div class="cart-drawer-total"><span>Total</span><strong>${money(totals.total)}</strong></div></div><a class="btn btn-white" target="_blank" rel="noopener" href="${cartWhatsAppUrl()}">Finalizar compra por WhatsApp</a><button class="btn btn-outline" type="button" data-drawer-clear>Vaciar carrito</button>`;
  qa('[data-drawer-plus]',body).forEach(b=>b.addEventListener('click',()=>{let c=readCart(); const idx=Number(b.dataset.drawerPlus); c[idx].qty=(c[idx].qty||1)+1; writeCart(c); renderCartPage(); renderCartDrawer();}));
  qa('[data-drawer-minus]',body).forEach(b=>b.addEventListener('click',()=>{let c=readCart(); const idx=Number(b.dataset.drawerMinus); c[idx].qty=(c[idx].qty||1)-1; if(c[idx].qty<=0)c.splice(idx,1); writeCart(c); renderCartPage(); renderCartDrawer();}));
  qa('[data-drawer-remove]',body).forEach(b=>b.addEventListener('click',()=>{let c=readCart(); c.splice(Number(b.dataset.drawerRemove),1); writeCart(c); renderCartPage(); renderCartDrawer();}));
@@ -418,7 +439,7 @@ function initFloatingCart(){
  document.addEventListener('keydown',e=>{if(e.key==='Escape') closeCartDrawer();});
 }
 
-function renderCartPage(){const box=q('[data-cart-page]'); if(!box) return; const cart=readCart(); if(!cart.length){box.innerHTML=`<div class="cart-empty"><h2>Tu carrito está vacío</h2><p>Abre una categoría, selecciona un perfume y elige el envase para agregarlo aquí.</p><a class="btn btn-white" href="pagina.html#mas-vendidos">Ver perfumes</a></div>`; return;} const totals=cartTotals(cart); box.innerHTML=`<div class="cart-list">${cart.map((i,idx)=>{const line=Number(i.price||0)*Number(i.qty||1); return `<article class="cart-row"><img src="${safe(asset(i.image))}" alt="${safe(i.name)}"><div><h3>${safe(i.name)}</h3><p>${safe(i.brand||'Díaz Perfumería')} · ${safe(i.size)}</p><strong>${money(i.price)} c/u · ${money(line)}</strong></div><div class="cart-qty"><button data-cart-minus="${idx}">−</button><span>${i.qty||1}</span><button data-cart-plus="${idx}">+</button></div><button class="cart-remove" data-cart-remove="${idx}">Eliminar</button></article>`}).join('')}</div><div class="cart-summary"><div class="cart-summary-line"><span>Subtotal</span><strong>${money(totals.subtotal)}</strong></div><div class="cart-summary-line discount"><span>Descuento 15%</span><strong>− ${money(totals.discount)}</strong></div><div class="cart-summary-line total"><span>Total</span><strong>${money(totals.total)}</strong></div><a class="btn btn-white" target="_blank" rel="noopener" href="${cartWhatsAppUrl()}">Finalizar compra por WhatsApp</a><button class="btn btn-outline" type="button" data-cart-clear>Vaciar carrito</button></div>`;
+function renderCartPage(){const box=q('[data-cart-page]'); if(!box) return; const cart=readCart(); if(!cart.length){box.innerHTML=`<div class="cart-empty"><h2>Tu carrito está vacío</h2><p>Abre una categoría, selecciona un perfume y elige el envase para agregarlo aquí.</p><a class="btn btn-white" href="pagina.html#mas-vendidos">Ver perfumes</a></div>`; return;} const totals=cartTotals(cart); const discountRow=ACTIVAR_DESCUENTO_15?`<div class="cart-summary-line discount"><span>Descuento ${CART_DISCOUNT_PERCENT}%</span><strong>− ${money(totals.discount)}</strong></div>`:''; box.innerHTML=`<div class="cart-list">${cart.map((i,idx)=>{const line=Number(i.price||0)*Number(i.qty||1); return `<article class="cart-row"><img src="${safe(asset(i.image))}" alt="${safe(i.name)}"><div><h3>${safe(i.name)}</h3><p>${safe(i.brand||'Díaz Perfumería')} · ${safe(i.size)}</p><strong>${money(i.price)} c/u · ${money(line)}</strong></div><div class="cart-qty"><button data-cart-minus="${idx}">−</button><span>${i.qty||1}</span><button data-cart-plus="${idx}">+</button></div><button class="cart-remove" data-cart-remove="${idx}">Eliminar</button></article>`}).join('')}</div><div class="cart-summary"><div class="cart-summary-line"><span>Subtotal</span><strong>${money(totals.subtotal)}</strong></div>${discountRow}<div class="cart-summary-line total"><span>Total</span><strong>${money(totals.total)}</strong></div><a class="btn btn-white" target="_blank" rel="noopener" href="${cartWhatsAppUrl()}">Finalizar compra por WhatsApp</a><button class="btn btn-outline" type="button" data-cart-clear>Vaciar carrito</button></div>`;
  qa('[data-cart-plus]',box).forEach(b=>b.addEventListener('click',()=>{let c=readCart(); c[Number(b.dataset.cartPlus)].qty=(c[Number(b.dataset.cartPlus)].qty||1)+1; writeCart(c); renderCartPage();}));
  qa('[data-cart-minus]',box).forEach(b=>b.addEventListener('click',()=>{let c=readCart(); const i=Number(b.dataset.cartMinus); c[i].qty=(c[i].qty||1)-1; if(c[i].qty<=0)c.splice(i,1); writeCart(c); renderCartPage();}));
  qa('[data-cart-remove]',box).forEach(b=>b.addEventListener('click',()=>{let c=readCart(); c.splice(Number(b.dataset.cartRemove),1); writeCart(c); renderCartPage();}));
