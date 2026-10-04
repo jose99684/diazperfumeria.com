@@ -2,6 +2,8 @@
 // Ruta base para imágenes y videos. Se respeta incluso cuando DIAZ_ROOT es cadena vacía en index.html.
 const ROOT = (typeof window.DIAZ_ROOT === 'string') ? window.DIAZ_ROOT : '../';
 const WA_PHONE = '573145016713';
+const CART_DISCOUNT_RATE = 0.15;
+const SIZE_PRICES = Object.freeze({30:24000, 50:37000, 100:69000});
 const q=(s,c=document)=>c.querySelector(s), qa=(s,c=document)=>Array.from(c.querySelectorAll(s));
 const money=n=>Number(n||0) ? '$ '+Number(n||0).toLocaleString('es-CO') : 'Consultar precio';
 const safe=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
@@ -272,13 +274,12 @@ function familyFor(text){
  if(/lattafa|armaf|afnan|haramain|arab/.test(text)) return 'Árabe';
  return 'Premium';
 }
+function fixedPriceForSize(size, fallback=0){
+ const ml=String(size||'').replace(/\D/g,'');
+ return SIZE_PRICES[ml] || Number(fallback||0);
+}
 function variantPriceFrom(o, size, base){
- const explicit=extractPrice(pick(o,[`Precio ${size}ml`,`Precio ${size} ml`,`Precio ${size}ML`,`Precio ${size} ML`,`${size}ml`,`${size} ml`,`${size}ML`,`${size} ML`,`P${size}`,`Precio${size}`]));
- if(explicit) return explicit;
- if(size==='50') return base || 60000;
- if(size==='30') return base ? Math.round(base*0.64866/100)*100 : 60000;
- if(size==='100') return base ? Math.round(base*1.86486/100)*100 : 129900;
- return base || 0;
+ return fixedPriceForSize(size, base);
 }
 function variantImageFrom(o, size){
  const explicit=driveImage(pick(o,[`Imagen ${size}ml`,`Imagen ${size} ml`,`Imagen ${size}ML`,`Imagen ${size} ML`,`Foto ${size}ml`,`Envase ${size}ml`,`URL imagen ${size}ml`,`Link imagen ${size}ml`]));
@@ -308,22 +309,24 @@ function normalizeProduct(o){
   originalPrice: original ? (size==='50'?original:(size==='30'?Math.round(original*0.64866/100)*100:Math.round(original*1.86486/100)*100)) : 0,
   image: variantImageFrom(o,size)
  }));
- return {name,brand,description:desc||`Extracto de perfume de alta concentración con presencia elegante, buena fijación y una estela pensada para destacar.`,image,price:base||variants[0].price||60000,originalPrice:original,category,family,variants,notes};
+ return {name,brand,description:desc||`Extracto de perfume de alta concentración con presencia elegante, buena fijación y una estela pensada para destacar.`,image,price:variants[0]?.price||SIZE_PRICES['30'],originalPrice:original,category,family,variants,notes};
 }
 function productsForCategory(label){return (window.DIAZ_PRODUCTS||[]).filter(p=>p.category===label);}
 function homeProducts(){const names=window.DIAZ_FEATURED_NAMES||[]; let list=[]; names.forEach(n=>{const found=(window.DIAZ_PRODUCTS||[]).find(p=>p.name.toLowerCase().includes(n.toLowerCase())); if(found&&!list.includes(found)) list.push(found);}); if(list.length<9) list=list.concat((window.DIAZ_PRODUCTS||[]).filter(p=>!list.includes(p))).slice(0,9); return list.slice(0,9);}
 function variantsFor(p){
- if(p?.variants?.length) return p.variants.map(v=>({...v, size:String(v.size||v.ml+'ML').toUpperCase(), ml:String(v.ml||String(v.size||'').replace(/\D/g,'')), price:Number(v.price||0), originalPrice:Number(v.originalPrice||0), image:v.image||p.image}));
- const base=p?.price||60000, original=p?.originalPrice||0;
+ if(p?.variants?.length) return p.variants.map(v=>{
+  const ml=String(v.ml||String(v.size||'').replace(/\D/g,''));
+  return {...v, size:String(v.size||ml+'ML').toUpperCase(), ml, price:fixedPriceForSize(ml,v.price), originalPrice:SIZE_PRICES[ml]?0:Number(v.originalPrice||0), image:v.image||p.image};
+ });
  return [
-  {size:'30ML', ml:'30', price:Math.round(base*0.64866/100)*100, originalPrice:original?Math.round(original*0.64866/100)*100:0, image:'envases_imagenes/envase_30ml_2.png'},
-  {size:'50ML', ml:'50', price:base, originalPrice:original, image:'envases_imagenes/envase_50ml_2.png'},
-  {size:'100ML', ml:'100', price:Math.round(base*1.86486/100)*100, originalPrice:original?Math.round(original*1.86486/100)*100:0, image:'envases_imagenes/envase_100ml.png'}
+  {size:'30ML', ml:'30', price:SIZE_PRICES['30'], originalPrice:0, image:'envases_imagenes/envase_30ml_2.png'},
+  {size:'50ML', ml:'50', price:SIZE_PRICES['50'], originalPrice:0, image:'envases_imagenes/envase_50ml_2.png'},
+  {size:'100ML', ml:'100', price:SIZE_PRICES['100'], originalPrice:0, image:'envases_imagenes/envase_100ml.png'}
  ];
 }
 function minVariantPrice(p){const prices=variantsFor(p).map(v=>v.price).filter(Boolean); return prices.length?Math.min(...prices):(p?.price||60000);}
 // TARJETA DE PRODUCTO: cambia aquí el texto del botón, badge o estructura de cada perfume.
-function cardHTML(p,idx){const price=minVariantPrice(p); const original=p.originalPrice||Math.round(price*1.12/1000)*1000; return `<article class="product-card" data-product-index="${idx}" tabindex="0"><div class="product-media"><span class="product-badge">AHORRA 10%</span><img src="${safe(asset(p.image))}" alt="${safe(p.name)}" loading="lazy" onerror="this.onerror=null;this.src='${safe(asset('envases_imagenes/envases_1.png'))}'"></div><div class="product-info"><h3 class="product-title">${safe(p.name)}</h3><div class="product-brand">${safe(p.brand||p.category||'Díaz Perfumería')}</div><div class="product-price">A partir de ${money(price)} ${original&&original>price?`<del>${money(original)}</del>`:''}</div><button class="select-button" type="button">Seleccionar opciones</button></div></article>`;}
+function cardHTML(p,idx){const price=minVariantPrice(p); return `<article class="product-card" data-product-index="${idx}" tabindex="0"><div class="product-media"><span class="product-badge">15% DTO. EN CARRITO</span><img src="${safe(asset(p.image))}" alt="${safe(p.name)}" loading="lazy" onerror="this.onerror=null;this.src='${safe(asset('envases_imagenes/envases_1.png'))}'"></div><div class="product-info"><h3 class="product-title">${safe(p.name)}</h3><div class="product-brand">${safe(p.brand||p.category||'Díaz Perfumería')}</div><div class="product-price">A partir de ${money(price)}</div><button class="select-button" type="button">Seleccionar opciones</button></div></article>`;}
 function bindProductCards(products, scope=document){qa('[data-product-index]',scope).forEach(card=>{const open=()=>openProductModal(products[Number(card.dataset.productIndex)],true); card.addEventListener('click',open); card.addEventListener('keydown',e=>{if(e.key==='Enter') open();});});}
 // LOS MÁS VENDIDOS: genera las tarjetas usando DIAZ_FEATURED_NAMES y los datos de diaz-data.js.
 function initHomeProducts(){const track=q('[data-featured-products]'); if(!track) return; const products=homeProducts(); let page=0; const per=3; const pages=Math.max(1,Math.ceil(products.length/per)); track.innerHTML=products.map(cardHTML).join(''); bindProductCards(products,track); const status=q('[data-carousel-status]'); function update(){track.style.transform=`translateX(${-page*100}%)`; if(status) status.textContent=(page+1)+'/'+pages;} qa('[data-carousel-prev]').forEach(b=>b.addEventListener('click',()=>{page=(page-1+pages)%pages; update();})); qa('[data-carousel-next]').forEach(b=>b.addEventListener('click',()=>{page=(page+1)%pages; update();})); update();}
@@ -367,12 +370,17 @@ function openProductFromHash(products){
 function initVideoFallback(){qa('[data-video-fallback]').forEach(v=>v.addEventListener('error',()=>{v.closest('.video-card')?.classList.add('video-error')}));}
 // VIDEOS DE EXPERIENCIAS: permite flechas, arrastre horizontal y scroll con rueda del mouse.
 function initExperienceSlider(){qa('[data-video-slider]').forEach(slider=>{const track=q('[data-video-track]',slider); if(!track) return; const amount=()=>{const card=q('.video-card',track); if(card){const styles=getComputedStyle(track); const gap=parseFloat(styles.columnGap||styles.gap||'0')||0; return Math.max(240,Math.round(card.getBoundingClientRect().width+gap));} return Math.max(260,Math.round(track.clientWidth*.86));}; qa('[data-video-prev]',slider).forEach(b=>b.addEventListener('click',()=>track.scrollBy({left:-amount(),behavior:'smooth'}))); qa('[data-video-next]',slider).forEach(b=>b.addEventListener('click',()=>track.scrollBy({left:amount(),behavior:'smooth'}))); track.addEventListener('wheel',e=>{if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){e.preventDefault(); track.scrollBy({left:e.deltaY,behavior:'smooth'});}}, {passive:false}); let down=false,startX=0,startLeft=0; track.addEventListener('pointerdown',e=>{down=true;startX=e.clientX;startLeft=track.scrollLeft;track.setPointerCapture?.(e.pointerId);}); track.addEventListener('pointermove',e=>{if(!down)return; track.scrollLeft=startLeft-(e.clientX-startX);}); ['pointerup','pointercancel','pointerleave'].forEach(ev=>track.addEventListener(ev,()=>down=false));});}
-function readCart(){try{const raw=JSON.parse(localStorage.getItem('diazCart')||localStorage.getItem('cart')||'[]')||[];return raw.map(i=>({id:i.id||`${i.nombre||i.name}_${i.tamaño||i.size||'30ML'}`,name:i.name||i.nombre||'Perfume Díaz',brand:i.brand||'',size:i.size||i.tamaño||'30ML',price:Number(i.price||i.precio||0),image:i.image||i.imagen||'envases_imagenes/envases_1.png',qty:Number(i.qty||i.cantidad||1)}));}catch(e){return []}}
+function readCart(){try{const raw=JSON.parse(localStorage.getItem('diazCart')||localStorage.getItem('cart')||'[]')||[];return raw.map(i=>{const size=i.size||i.tamaño||'30ML'; return {id:i.id||`${i.nombre||i.name}_${size}`,name:i.name||i.nombre||'Perfume Díaz',brand:i.brand||'',size,price:fixedPriceForSize(size,Number(i.price||i.precio||0)),image:i.image||i.imagen||'envases_imagenes/envases_1.png',qty:Number(i.qty||i.cantidad||1)};});}catch(e){return []}}
 function writeCart(cart){localStorage.setItem('diazCart',JSON.stringify(cart)); updateCartBadge();}
 function addCartItem(item){let cart=readCart(); const existing=cart.find(x=>x.id===item.id); if(existing) existing.qty=(existing.qty||1)+(item.qty||1); else cart.push(item); writeCart(cart); renderCartPage(); renderCartDrawer();}
 function updateCartBadge(){const count=readCart().reduce((s,i)=>s+Number(i.qty||1),0); qa('a[aria-label="Carrito"], a[href$="cart.html"], [data-cart-drawer-open]').forEach(a=>{let b=q('.cart-count-badge',a); if(!b){b=document.createElement('span'); b.className='cart-count-badge'; a.appendChild(b);} b.textContent=count; b.style.display=count?'grid':'none';});}
 function showToast(text){let t=q('.diaz-toast'); if(!t){t=document.createElement('div'); t.className='diaz-toast'; document.body.appendChild(t);} t.textContent=text; t.classList.add('show'); clearTimeout(t._timer); t._timer=setTimeout(()=>t.classList.remove('show'),2400);}
-function cartWhatsAppUrl(){const cart=readCart(); let msg='Hola, quiero finalizar la compra de estos productos:\n\n'; let total=0; cart.forEach(i=>{const lineTotal=Number(i.price||0)*Number(i.qty||1); total+=lineTotal; msg+=`• ${i.name} (${i.size}) x${i.qty||1}: ${money(lineTotal)}\n`;}); msg+=`\nTotal: ${money(total)}\n\n¿Me confirmas disponibilidad y envío?`; return `https://wa.me/${WA_PHONE}?text=${encodeURIComponent(msg)}`;}
+function cartTotals(cart=readCart()){
+ const subtotal=cart.reduce((sum,i)=>sum+(Number(i.price||0)*Number(i.qty||1)),0);
+ const discount=Math.round(subtotal*CART_DISCOUNT_RATE);
+ return {subtotal,discount,total:Math.max(0,subtotal-discount)};
+}
+function cartWhatsAppUrl(){const cart=readCart(); let msg='Hola, quiero finalizar la compra de estos productos:\n\n'; cart.forEach(i=>{const lineTotal=Number(i.price||0)*Number(i.qty||1); msg+=`• ${i.name} (${i.size}) x${i.qty||1}: ${money(lineTotal)}\n`;}); const totals=cartTotals(cart); msg+=`\nSubtotal: ${money(totals.subtotal)}\nDescuento 15%: -${money(totals.discount)}\nTotal con descuento: ${money(totals.total)}\n\n¿Me confirmas disponibilidad y envío?`; return `https://wa.me/${WA_PHONE}?text=${encodeURIComponent(msg)}`;}
 
 function ensureCartDrawer(){
  if(!q('[data-cart-drawer-open]')){
@@ -393,10 +401,11 @@ function openCartDrawer(){ensureCartDrawer(); renderCartDrawer(); q('[data-cart-
 function closeCartDrawer(){q('[data-cart-drawer]')?.classList.remove('open'); q('.cart-overlay')?.classList.remove('open');}
 function renderCartDrawer(){
  const body=q('[data-cart-drawer-body]'), foot=q('[data-cart-drawer-foot]'); if(!body||!foot) return;
- const cart=readCart(); let total=0;
+ const cart=readCart();
  if(!cart.length){body.innerHTML='<div class="cart-drawer-empty"><div><h3>Tu carrito está vacío</h3><p>Selecciona un perfume, elige el envase y agrégalo al carrito.</p></div></div>'; foot.innerHTML='<a class="btn btn-white" href="'+shopCollectionHref()+'">Ver perfumes</a>'; return;}
- body.innerHTML='<div class="cart-drawer-list">'+cart.map((i,idx)=>{const line=Number(i.price||0)*Number(i.qty||1); total+=line; return `<article class="cart-drawer-row"><img src="${safe(asset(i.image))}" alt="${safe(i.name)}"><div><h3>${safe(i.name)}</h3><p>${safe(i.brand||'Díaz Perfumería')} · ${safe(i.size)}</p><strong>${money(line)}</strong><div class="cart-drawer-row-actions"><button type="button" data-drawer-minus="${idx}">−</button><span>${i.qty||1}</span><button type="button" data-drawer-plus="${idx}">+</button><button type="button" class="drawer-remove" data-drawer-remove="${idx}">Eliminar</button></div></div></article>`}).join('')+'</div>';
- foot.innerHTML='<div class="cart-drawer-total"><span>Total</span><strong>'+money(total)+'</strong></div><a class="btn btn-white" target="_blank" rel="noopener" href="'+cartWhatsAppUrl()+'">Finalizar compra por WhatsApp</a><button class="btn btn-outline" type="button" data-drawer-clear>Vaciar carrito</button>';
+ body.innerHTML='<div class="cart-drawer-list">'+cart.map((i,idx)=>{const line=Number(i.price||0)*Number(i.qty||1); return `<article class="cart-drawer-row"><img src="${safe(asset(i.image))}" alt="${safe(i.name)}"><div><h3>${safe(i.name)}</h3><p>${safe(i.brand||'Díaz Perfumería')} · ${safe(i.size)}</p><strong>${money(line)}</strong><div class="cart-drawer-row-actions"><button type="button" data-drawer-minus="${idx}">−</button><span>${i.qty||1}</span><button type="button" data-drawer-plus="${idx}">+</button><button type="button" class="drawer-remove" data-drawer-remove="${idx}">Eliminar</button></div></div></article>`}).join('')+'</div>';
+ const totals=cartTotals(cart);
+ foot.innerHTML='<div class="cart-drawer-totals"><div class="cart-drawer-line"><span>Subtotal</span><strong>'+money(totals.subtotal)+'</strong></div><div class="cart-drawer-line discount"><span>Descuento 15%</span><strong>− '+money(totals.discount)+'</strong></div><div class="cart-drawer-total"><span>Total</span><strong>'+money(totals.total)+'</strong></div></div><a class="btn btn-white" target="_blank" rel="noopener" href="'+cartWhatsAppUrl()+'">Finalizar compra por WhatsApp</a><button class="btn btn-outline" type="button" data-drawer-clear>Vaciar carrito</button>';
  qa('[data-drawer-plus]',body).forEach(b=>b.addEventListener('click',()=>{let c=readCart(); const idx=Number(b.dataset.drawerPlus); c[idx].qty=(c[idx].qty||1)+1; writeCart(c); renderCartPage(); renderCartDrawer();}));
  qa('[data-drawer-minus]',body).forEach(b=>b.addEventListener('click',()=>{let c=readCart(); const idx=Number(b.dataset.drawerMinus); c[idx].qty=(c[idx].qty||1)-1; if(c[idx].qty<=0)c.splice(idx,1); writeCart(c); renderCartPage(); renderCartDrawer();}));
  qa('[data-drawer-remove]',body).forEach(b=>b.addEventListener('click',()=>{let c=readCart(); c.splice(Number(b.dataset.drawerRemove),1); writeCart(c); renderCartPage(); renderCartDrawer();}));
@@ -409,7 +418,7 @@ function initFloatingCart(){
  document.addEventListener('keydown',e=>{if(e.key==='Escape') closeCartDrawer();});
 }
 
-function renderCartPage(){const box=q('[data-cart-page]'); if(!box) return; const cart=readCart(); if(!cart.length){box.innerHTML=`<div class="cart-empty"><h2>Tu carrito está vacío</h2><p>Abre una categoría, selecciona un perfume y elige el envase para agregarlo aquí.</p><a class="btn btn-white" href="pagina.html#mas-vendidos">Ver perfumes</a></div>`; return;} let total=0; box.innerHTML=`<div class="cart-list">${cart.map((i,idx)=>{const line=Number(i.price||0)*Number(i.qty||1); total+=line; return `<article class="cart-row"><img src="${safe(asset(i.image))}" alt="${safe(i.name)}"><div><h3>${safe(i.name)}</h3><p>${safe(i.brand||'Díaz Perfumería')} · ${safe(i.size)}</p><strong>${money(i.price)}</strong></div><div class="cart-qty"><button data-cart-minus="${idx}">−</button><span>${i.qty||1}</span><button data-cart-plus="${idx}">+</button></div><button class="cart-remove" data-cart-remove="${idx}">Eliminar</button></article>`}).join('')}</div><div class="cart-summary"><span>Total</span><strong>${money(total)}</strong><a class="btn btn-white" target="_blank" rel="noopener" href="${cartWhatsAppUrl()}">Finalizar compra por WhatsApp</a><button class="btn btn-outline" type="button" data-cart-clear>Vaciar carrito</button></div>`;
+function renderCartPage(){const box=q('[data-cart-page]'); if(!box) return; const cart=readCart(); if(!cart.length){box.innerHTML=`<div class="cart-empty"><h2>Tu carrito está vacío</h2><p>Abre una categoría, selecciona un perfume y elige el envase para agregarlo aquí.</p><a class="btn btn-white" href="pagina.html#mas-vendidos">Ver perfumes</a></div>`; return;} const totals=cartTotals(cart); box.innerHTML=`<div class="cart-list">${cart.map((i,idx)=>{const line=Number(i.price||0)*Number(i.qty||1); return `<article class="cart-row"><img src="${safe(asset(i.image))}" alt="${safe(i.name)}"><div><h3>${safe(i.name)}</h3><p>${safe(i.brand||'Díaz Perfumería')} · ${safe(i.size)}</p><strong>${money(i.price)} c/u · ${money(line)}</strong></div><div class="cart-qty"><button data-cart-minus="${idx}">−</button><span>${i.qty||1}</span><button data-cart-plus="${idx}">+</button></div><button class="cart-remove" data-cart-remove="${idx}">Eliminar</button></article>`}).join('')}</div><div class="cart-summary"><div class="cart-summary-line"><span>Subtotal</span><strong>${money(totals.subtotal)}</strong></div><div class="cart-summary-line discount"><span>Descuento 15%</span><strong>− ${money(totals.discount)}</strong></div><div class="cart-summary-line total"><span>Total</span><strong>${money(totals.total)}</strong></div><a class="btn btn-white" target="_blank" rel="noopener" href="${cartWhatsAppUrl()}">Finalizar compra por WhatsApp</a><button class="btn btn-outline" type="button" data-cart-clear>Vaciar carrito</button></div>`;
  qa('[data-cart-plus]',box).forEach(b=>b.addEventListener('click',()=>{let c=readCart(); c[Number(b.dataset.cartPlus)].qty=(c[Number(b.dataset.cartPlus)].qty||1)+1; writeCart(c); renderCartPage();}));
  qa('[data-cart-minus]',box).forEach(b=>b.addEventListener('click',()=>{let c=readCart(); const i=Number(b.dataset.cartMinus); c[i].qty=(c[i].qty||1)-1; if(c[i].qty<=0)c.splice(i,1); writeCart(c); renderCartPage();}));
  qa('[data-cart-remove]',box).forEach(b=>b.addEventListener('click',()=>{let c=readCart(); c.splice(Number(b.dataset.cartRemove),1); writeCart(c); renderCartPage();}));
