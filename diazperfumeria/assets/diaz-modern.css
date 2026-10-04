@@ -771,7 +771,7 @@ html,body{max-width:100%;overflow-x:hidden}.experience-layout,.experience-slider
 @media (max-width:900px){.perfume-motion-wrap{grid-template-columns:1fr;gap:1.5rem;min-height:auto}.perfume-motion-list{height:260px;order:2}.perfume-motion-copy{order:1}.perfume-motion-track span{font-size:clamp(1.55rem,8vw,2.85rem)}.perfume-motion-copy p{font-size:1rem}}
 @media (prefers-reduced-motion:reduce){.perfume-motion-track{animation:none;transform:none}}
 
-/* v10: precios fijos por envase + resumen de carrito con descuento del 15% */
+/* v11: precios fijos por envase + resumen de carrito. El JS muestra/oculta el descuento según ACTIVAR_DESCUENTO_15. */
 .cart-summary-line,
 .cart-drawer-line{
   display:flex;
